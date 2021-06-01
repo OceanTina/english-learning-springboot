@@ -1,0 +1,47 @@
+-- ----------------------------
+-- 1、grade表uae_english_grade_tab
+-- ----------------------------
+drop table if exists uae_english_grade_tab;
+create table uae_english_grade_tab (
+  id   bigint(20) not null auto_increment comment 'gradeId',
+  grade_name   varchar(100) not null comment 'gradeName',
+  primary key (id)
+) engine=innodb comment = 'uae_english_grade_tab';
+
+insert into uae_english_grade_tab values(null,'高中英语');
+
+
+-- ----------------------------
+-- 2、class表uae_english_class_tab
+-- ----------------------------
+drop table if exists uae_english_class_tab;
+create table uae_english_class_tab (
+  id   bigint(20) not null auto_increment comment 'classId',
+  grade_id   bigint(20) not null comment 'fradeId',
+  class_name   varchar(100) not null comment 'className',
+  primary key (id)
+) engine=innodb comment = 'uae_english_class_tab';
+
+
+-- ----------------------------
+-- 3、group表uae_english_group_tab
+-- ----------------------------
+drop table if exists uae_english_group_tab;
+create table uae_english_group_tab (
+  id   bigint(20) not null auto_increment comment 'groupId',
+  class_id   bigint(20) not null comment 'classId',
+  primary key (id)
+) engine=innodb comment = 'uae_english_group_tab';
+
+-- ----------------------------
+-- 4、group表uae_english_word_tab
+-- ----------------------------
+drop table if exists uae_english_word_tab;
+create table uae_english_word_tab (
+  id   bigint(20) not null auto_increment comment 'wordId',
+  group_id   bigint(20) not null comment 'goupId',
+  word_en   varchar(100) not null comment '英文',
+  word_cn   varchar(100)  comment '中文',
+  word_pic   varchar(100)  comment '图片',
+  primary key (id)
+) engine=innodb comment = 'uae_english_word_tab';

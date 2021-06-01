@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.education.mapper.EducationEnglishMapper">
+
+
+    
+    <select id="selectWordAll" resultType="com.ruoyi.project.education.domain.Word">
+        SELECT
+            ueg.id AS gradeId,
+            uec.id AS classId,
+            uegg.id AS groupId,
+            uew.id AS id,
+            uew.word_en wordEn,
+            uew.word_cn wordCn,
+            uew.word_pic wordPic
+                FROM uae_english_grade_tab ueg,uae_english_class_tab uec,uae_english_group_tab uegg,uae_english_word_tab uew
+        <where>
+            ueg.id = uec.grade_id
+            AND uec.id = uegg.class_id
+            AND uegg.id = uew.group_id
+            AND ueg.id = 1
+            AND uew.is_delete = 0
+            <if test="classId != null and classId != 0">
+                AND uec.id = #{classId}
+            </if>
+            <if test="wordEn != null and wordEn != ''">
+                AND uew.word_en like concat('%', #{wordEn}, '%')
+            </if>
+        </where>
+             ORDER BY
+                uew.id
+	</select>
+
+    <insert id="addWord" parameterType="com.ruoyi.project.education.domain.Word">
+        INSERT INTO uae_english_word_tab
+            VALUES
+                (NULL,#{groupId},#{wordEn},#{wordCn},NULL,0);
+    </insert>
+
+    <update id="updateWordPic">
+        UPDATE uae_english_word_tab
+        SET word_pic = #{filePath}
+        WHERE
+            id = #{wordId}
+    </update>
+
+    <select id="getGroupWordByGrouIdClassId" resultType="com.ruoyi.project.education.domain.Word">
+        SELECT
+            ueg.id AS gradeId,
+            uec.id AS classId,
+            uegg.id AS groupId,
+            uew.id AS id,
+            uew.word_en wordEn,
+            uew.word_cn wordCn,
+            uew.word_pic wordPic
+                FROM uae_english_grade_tab ueg,uae_english_class_tab uec,uae_english_group_tab uegg,uae_english_word_tab uew
+                WHERE ueg.id = uec.grade_id
+                AND uec.id = uegg.class_id
+                AND uegg.id = uew.group_id
+                AND ueg.id = #{gradeId}
+                AND uec.id = #{classId}
+                AND uew.is_delete = 0
+            order by uew.id desc
+
+    </select>
+
+    <select id="getMaxGroupIdByClasId" resultType="java.lang.Integer">
+      SELECT COALESCE( MAX( id ), 0 ) AS id
+        FROM
+            uae_english_group_tab
+        WHERE
+            class_id = #{classId}
+    </select>
+
+    <insert id="insertGroupByClassId" parameterType="com.ruoyi.project.education.domain.WordGroup"  keyColumn="id"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO uae_english_group_tab
+            VALUES
+                (null ,#{classId});
+    </insert>
+
+    <select id="getWordClassAllList" resultType="com.ruoyi.project.education.domain.WordClass">
+        SELECT
+            uec.id,
+            uec.grade_id AS groupId,
+            uec.class_name AS className
+        FROM
+            uae_english_class_tab uec
+    </select>
+
+    <update id="updateWordByWordId" parameterType="com.ruoyi.project.education.domain.Word">
+        UPDATE uae_english_word_tab
+            SET group_id = #{groupId},
+            word_en = #{wordEn},
+            word_cn = #{wordCn}
+            WHERE
+                id = #{id}
+    </update>
+
+    <select id="getEnglishWordPicName" resultType="com.ruoyi.project.education.domain.Word">
+        SELECT
+            ueg.grade_name AS gradeName,
+            uect.class_name AS className,
+            uegt.id AS groupId,
+            uewt.id AS id,
+            uewt.word_en AS wordEn
+        FROM
+            uae_english_word_tab uewt,
+            uae_english_group_tab uegt,
+            uae_english_class_tab uect,
+            uae_english_grade_tab ueg
+        WHERE
+            uewt.group_id = uegt.id
+        AND uegt.class_id = uect.id
+        AND uect.grade_id = ueg.id
+        AND uewt.id = #{wordId}
+    </select>
+
+    <delete id="deleteEnglishWordById">
+        UPDATE uae_english_word_tab
+            SET is_delete = 1
+            WHERE
+                id = #{wordId}
+    </delete>
+ 	
+</mapper> 
