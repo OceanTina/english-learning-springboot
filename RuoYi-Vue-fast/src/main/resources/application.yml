@@ -8,7 +8,7 @@ ruoyi:
   copyrightYear: 2021
   # 实例演示开关
   demoEnabled: true
-  # 文件路径 示例（ Windows配置D:/educationEnglish/uploadPath，Linux配置 /home/educationEnglish/uploadPath）
+  # 文件路径 示例（ Windows配置D:/educationEnglish/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: D:/educationEnglish/uploadPath
   # 获取ip地址开关
   addressEnabled: false
