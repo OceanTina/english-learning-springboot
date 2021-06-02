@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     
-    <select id="selectWordAll" resultType="com.ruoyi.project.education.domain.Word">
+    <select id="selectWordAll" resultType="com.ruoyi.project.education.domain.Word" parameterType="com.ruoyi.project.education.domain.Word">
         SELECT
             ueg.id AS gradeId,
             uec.id AS classId,
@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ueg.id = uec.grade_id
             AND uec.id = uegg.class_id
             AND uegg.id = uew.group_id
-            AND ueg.id = 1
+            AND ueg.id = #{gradeId}
             AND uew.is_delete = 0
             <if test="classId != null and classId != 0">
                 AND uec.id = #{classId}
